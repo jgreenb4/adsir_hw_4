@@ -1,0 +1,52 @@
+---
+title: "adsir_hw_4"
+author: "Jake Greenberg"
+date: "4/19/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#Regular expressions
+library(tidyverse)        # contains stringr for regex
+library(googlesheets4)    # for reading in data
+gs4_deauth()              # to read in google sheet (or download)
+
+#tmap
+library(tmap)
+library(pacman)
+library(gifski)          # not needed since you won't do animated graphs
+
+theme_set(theme_minimal()) # Lisa's favorite theme
+```
+
+https://github.com/jgreenb4/adsir_hw_4
+
+# Regular Expressions
+
+```{r}
+bestsellers <- read_sheet("https://docs.google.com/spreadsheets/d/1n3xKHK4-t5S73LgxOJVJWT5fMYjLj7kqmYl1LHkpk80/edit?usp=sharing")
+```
+
+1. Find books with multiple authors (HINT: Consider the possibility of an author having “and” in their name)
+
+```{r}
+ bestsellers %>% 
+  mutate(duplicate_authors = str_detect(author, "\\sand\\s")) %>% 
+  filter(duplicate_authors == "TRUE") %>% 
+  select(title, author, duplicate_authors)
+```
+
+2. Detect if the author’s first name starts with a vowel
+
+
+```{r}
+bestsellers %>% 
+  mutate(vowel = str_detect(author, "^[AEIOU]")) %>% 
+  filter(vowel == TRUE) %>% 
+  select(author, title, vowel)
+```
+
