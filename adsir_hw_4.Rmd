@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
 ```{r}
@@ -146,8 +146,6 @@ tm_shape(World) +
 
 3. Now, make a new plot with the World data that provides a look at country economic status and the inequality associated with each.
 
-
-
 ```{r}
 # Set your mode
 tmap_mode('plot')
@@ -180,4 +178,14 @@ NLD_mpm_fct <- tm_shape(NLD_muni) +
 
 tmap_arrange(NLD_mpm, NLD_mpm_fct)
 ```
+
+# Data Ethics: Data visualization principles
+
+I’m hoping that the topic for this week is a review for all of you, but it’s good to remind ourselves of these principles.
+
+Task:
+
+Read both short articles in Week 6. Data visualization section of Calling Bulllshit. Were there any principles mentioned that you hadn’t heard of before? What graph stood out for you as “the worst”? Did any of the graphs fool you? Or were able to overcome the bad practices (don’t worry if they fool you - plently of them have fooled me, too.)? How does practicing good data visualization principles fit in with data ethics?
+
+**Some of the concepts revolving around line graphs were ideas that were naturally ingrained into my statistical processes, but I had never really thought too deeply about the principles behind them. For example, I frequently deploy line graphs for the sake of comparison of numbers over time, yet had not fully considered the necessity for choosing a y-axis scale that will accurately illustrate the magnitude of these changes. I thought that the Florida gun deaths graph was easily the "worst" out of these two sections because it was blatantly misleading with its flipped axis, and clearly designed to deceive people who may just be glancing over it. I was initially fooled by the first graph in the misleading axes on graphs section (the number of weekly hours for workers in different EU nations), but the zoomed out version below it illuminated the issues with this graph. I believe that data visualization principles and data ethics go hand-in-hand in that one should always be trying to paint as accurate and clear a picture of possible of the data in their visualizations, rather than tampering with the data display to push an agenda across.**
 
