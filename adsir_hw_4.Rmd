@@ -50,3 +50,134 @@ bestsellers %>%
   select(author, title, vowel)
 ```
 
+
+3. Change all authors with the name Alexander to Alex
+
+```{r}
+bestsellers %>% 
+  mutate(checking = str_detect(author, "^Alexander"), names = str_replace_all(author, "Alexander", "Alex")) %>% 
+  filter(checking == T) %>% 
+  select(author, names)
+```
+
+
+4. Find books that are the second book in a series
+
+```{r}
+bestsellers %>%
+  mutate(series = str_detect(description, 
+                          pattern = "sequel")) %>%
+  filter(series == TRUE) %>% 
+  select(title, description)
+```
+
+5. Find books that are the third or fourth one in a series
+
+```{r}
+bestsellers %>%
+  mutate(series = str_detect(description, 
+                          pattern = "(third|fourth) book")) %>%
+  filter(series == TRUE)
+```
+
+
+6. Find books that are the 10th, 11th, …, or 19th book in a series
+
+```{r}
+bestsellers %>%
+  mutate(series = str_detect(description,
+                          pattern = "1[0-9]th book")) %>%
+  filter(series == TRUE)
+```
+
+7. Describe in your own words how you would go about writing a regular expression for password pattern matching (ie 8 character minimum, one capital letter minimum, one lowercase letter minimum, one digit minimum, one special character minimum).
+
+In writing a regular expression for password pattern matching, I would write different clauses to ensure that each of the criteria for a valid password is met. I would start by ensuring that the password is at least 8 characters long with the clause, nchar(password) >= 8, where the password is stored by the variable, password. Next, I would use str_detect to ensure that there is at least one capital letter, lowercase letter, number, and special character, as shown in the above examples.
+
+
+# Tmap Exercises 
+
+```{r}
+data("World")
+```
+
+```{r}
+data("metro")
+```
+
+1. Make a world map using the base World dataset we used with the COVID example. Add information about income groups (income_grp) to the plot, specify a color palette.
+
+```{r}
+# let's explore the variable names of each dataset
+names(World)
+names(metro)
+```
+
+```{r}
+# Set your mode
+tmap_mode('plot')
+
+tm_shape(World) +
+    tm_polygons("income_grp", 
+                palette="-Greens", 
+                contrast= .9, # this sees to lead to the clearest distinctions
+                id="name", 
+                title="Income group")
+```
+
+2. To the plot from (1), add the new dataset metro to the plot, and add information about cities’ populations in 2020.
+
+```{r}
+# Set your mode
+tmap_mode('plot')
+
+tm_shape(World) +
+  tm_polygons("income_grp", 
+              palette="-Greens", 
+              contrast= .9, 
+              id="name", 
+              title="Income group") +
+  tm_shape(metro) +
+  tm_bubbles("pop2020", 
+        contrast=1, 
+        title.size="Metro population", 
+        id="name")  #HINT: what other tm_type can we add here?
+```
+
+3. Now, make a new plot with the World data that provides a look at country economic status and the inequality associated with each.
+
+
+
+```{r}
+# Set your mode
+tmap_mode('plot')
+
+tm_shape(World) +
+  tm_polygons("economy") +
+  tm_bubbles("inequality", 
+             border.alpha = .5) +
+  tm_format("World_wide")
+```
+
+4. Using a new data set, NDL_muni municipality data from the Netherlands, create a plot with two separate maps. One showing the percentage of men per municipality of the whole country, and one showing the same but faceted by province.
+
+```{r}
+tmap_mode("plot")
+
+data(NLD_muni)
+
+NLD_muni <- NLD_muni %>% 
+  mutate(perc_men = pop_men / population * 100)
+
+NLD_mpm <- tm_shape(NLD_muni) + 
+  tm_polygons("perc_men", 
+              palette = 'RdYlBu')
+
+NLD_mpm_fct <- tm_shape(NLD_muni) +
+    tm_polygons("perc_men", 
+                palette = "RdYlBu") +
+    tm_facets(by = "province")
+
+tmap_arrange(NLD_mpm, NLD_mpm_fct)
+```
+
